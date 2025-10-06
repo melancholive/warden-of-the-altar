@@ -2,7 +2,7 @@
 extends CharacterBody2D
 
 @export var max_health: int = 10
-@export var speed: float = 100.0
+@export var speed: float = 10.0
 @export var damage_on_contact: int = 1
 @export var shoot_bullet: bool = false
 @export var bullet_scene: PackedScene
@@ -43,17 +43,21 @@ func handle_shooting(delta: float) -> void:
 		shoot_timer = shoot_cooldown
 
 func fire_bullet():
-	var player = get_tree().get_first_node_in_group("player")
-	if player == null:
+	if bullet_scene == null:
+		print("[DEBUG] Cannot fire: bullet_scene is null")
 		return
 
 	var bullet = bullet_scene.instantiate()
 	bullet.global_position = global_position
-	bullet.direction = (player.global_position - global_position).normalized()
+	bullet.direction = (get_tree().get_first_node_in_group("player").global_position - global_position).normalized()
+
+	# assign shooter **before adding to the scene**
 	bullet.shooter = self
 	bullet.spawn_position = global_position
+
 	get_tree().current_scene.add_child(bullet)
 	print("[DEBUG] Bullet spawned at ", bullet.global_position, " by ", self.name)
+
 
 func take_damage(amount: int) -> void:
 	current_health -= amount

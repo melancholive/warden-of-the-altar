@@ -1,38 +1,45 @@
+class_name Bullet
 extends Area2D
 
-@export var speed: float = 600.0
+@export var speed: float = 300.0
 @export var damage: int = 5
-@export var max_distance: float = 800.0
-
 var direction: Vector2 = Vector2.RIGHT
 var shooter: Node = null
 var spawn_position: Vector2
 
-func _physics_process(delta: float) -> void:
-	if shooter == null:
-		return # wait until shooter is assigned
+func _ready() -> void:
+	spawn_position = global_position
 
+func _physics_process(delta: float) -> void:
+	# Move bullet
 	position += direction * speed * delta
 
-	# Despawn after traveling too far
-	if spawn_position.distance_to(global_position) > max_distance:
+	# Despawn if too far from spawn
+	if position.distance_to(spawn_position) > 1000:
+		queue_free()
+
+	# Despawn if shooter no longer exists
+	if shooter == null or not is_instance_valid(shooter):
 		queue_free()
 
 func _on_body_entered(body: Node) -> void:
-	if shooter == null:
+	if body == shooter:
+		return  # Ignore the shooter itself
+
+	# Damage player if shot by enemy
+	if shooter.is_in_group("enemy") and body.is_in_group("player"):
+		if body.has_method("take_damage"):
+			body.take_damage(damage)
+		queue_free()
 		return
 
-	var target_group = ""
-	if shooter.is_in_group("player"):
-		target_group = "enemy"
-	elif shooter.is_in_group("enemy"):
-		target_group = "player"
-
-	if not body.is_in_group(target_group):
+	# Damage enemy if shot by player
+	if shooter.is_in_group("player") and body.is_in_group("enemy"):
+		if body.has_method("take_damage"):
+			body.take_damage(damage)
+		queue_free()
 		return
 
-	if body.has_method("take_damage"):
-		body.take_damage(damage)
-		print("[DEBUG] Bullet from ", shooter.name, " hit ", body.name, " for ", damage, " damage")
-
-	queue_free()
+	# Optional: destroy on hitting walls
+	if body.is_in_group("wall"):
+		queue_free()

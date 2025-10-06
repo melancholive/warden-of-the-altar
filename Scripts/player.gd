@@ -2,17 +2,28 @@ extends CharacterBody2D
 
 @export var speed: float = 200.0
 @export var max_health: int = 100
-@export var current_health: int = max_health
 @export var heal_rate: float = 5.0
 @export var shoot_cooldown: float = 0.25
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
-@onready var health_bar = $PanelContainer/TextureProgressBar
-@onready var bullet_scene = preload("res://Scenes/bullet.tscn")
+@onready var health_bar: TextureProgressBar = $PanelContainer/TextureProgressBar
+@onready var bullet_scene: PackedScene = preload("res://Scenes/bullet.tscn")
+@onready var collision: CollisionShape2D = $CollisionShape2D
 
+var current_health: int
 var last_direction: Vector2 = Vector2.RIGHT
 var shoot_timer: float = 0.0
 var in_altar_zone: bool = false
+
+func _ready() -> void:
+	current_health = max_health
+	if health_bar:
+		health_bar.max_value = max_health
+		health_bar.value = current_health
+
+	# Connect collision signal for bullets
+	if has_signal("body_entered"):
+		connect("body_entered", Callable(self, "_on_body_entered"))
 
 func _physics_process(delta: float) -> void:
 	var direction = Vector2.ZERO
@@ -22,20 +33,24 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("ui_down"): direction.y += 1
 	if Input.is_action_pressed("ui_up"): direction.y -= 1
 
+	# Update facing direction only when moving
 	if direction != Vector2.ZERO:
 		last_direction = direction.normalized()
 
+	# Move player
 	velocity = direction.normalized() * speed
 	move_and_slide()
 
+	# Update health if in altar zone
 	update_health(delta)
 
+	# Play animations
 	if direction != Vector2.ZERO:
 		_play_walk_animation(direction)
 	else:
 		_play_idle_animation(last_direction)
 
-	# Shooting
+	# Handle shooting
 	shoot_timer -= delta
 	if Input.is_action_pressed("shoot") and shoot_timer <= 0:
 		shoot()
@@ -44,9 +59,10 @@ func _physics_process(delta: float) -> void:
 func update_health(delta: float) -> void:
 	if in_altar_zone and current_health < max_health:
 		current_health = min(current_health + delta * heal_rate, max_health)
-	health_bar.value = current_health
+	if health_bar:
+		health_bar.value = current_health
 
-func shoot():
+func shoot() -> void:
 	if bullet_scene == null:
 		return
 
@@ -55,9 +71,7 @@ func shoot():
 	bullet.direction = last_direction.normalized()
 	bullet.shooter = self
 	bullet.spawn_position = global_position
-
 	get_tree().current_scene.add_child(bullet)
-
 
 func _play_walk_animation(direction: Vector2):
 	if abs(direction.x) > abs(direction.y):
@@ -70,3 +84,21 @@ func _play_idle_animation(direction: Vector2):
 		anim.play("idle_right" if direction.x > 0 else "idle_left")
 	else:
 		anim.play("idle_down" if direction.y > 0 else "idle_up")
+
+func _on_body_entered(body: Node) -> void:
+	if body is Bullet:
+		# Take damage only if bullet was shot by an enemy
+		if body.shooter != self and body.shooter.is_in_group("enemy"):
+			take_damage(body.damage)
+			body.queue_free()
+
+func take_damage(amount: int) -> void:
+	current_health -= amount
+	if health_bar:
+		health_bar.value = current_health
+	if current_health <= 0:
+		die()
+
+func die() -> void:
+	print("[DEBUG] Player died")
+	queue_free()

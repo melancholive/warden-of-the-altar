@@ -6,7 +6,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_xjght"]
 
 [node name="Bullet" type="Area2D"]
-scale = Vector2(0.5199994, 0.5199994)
+scale = Vector2(0.664416, 0.664416)
 script = ExtResource("1_oduel")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
