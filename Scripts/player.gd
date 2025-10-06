@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 @export var speed: float = 200.0
 @export var max_health: int = 100
-@export var heal_rate: float = 5.0
+@export var heal_rate: float = 10.0
 @export var shoot_cooldown: float = 0.25
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
@@ -10,7 +10,7 @@ extends CharacterBody2D
 @onready var bullet_scene: PackedScene = preload("res://Scenes/bullet.tscn")
 @onready var collision: CollisionShape2D = $CollisionShape2D
 
-var current_health: int
+var current_health: float
 var last_direction: Vector2 = Vector2.RIGHT
 var shoot_timer: float = 0.0
 var in_altar_zone: bool = false
@@ -58,9 +58,16 @@ func _physics_process(delta: float) -> void:
 
 func update_health(delta: float) -> void:
 	if in_altar_zone and current_health < max_health:
+		#var old_health = current_health
 		current_health = min(current_health + delta * heal_rate, max_health)
+		#print("[DEBUG] Healing from ", old_health, " to ", current_health)
+	#else:
+		#if in_altar_zone:
+			#print("[DEBUG] Already at full health: ", current_health)
+
 	if health_bar:
 		health_bar.value = current_health
+
 
 func shoot() -> void:
 	if bullet_scene == null:
@@ -101,4 +108,5 @@ func take_damage(amount: int) -> void:
 
 func die() -> void:
 	print("[DEBUG] Player died")
+	get_tree().call_deferred("reload_current_scene")
 	queue_free()
