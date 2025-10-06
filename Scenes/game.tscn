@@ -6303,4 +6303,4 @@ player = NodePath("../Player")
 
 [node name="Enemy Spawner" type="Node2D" parent="."]
 script = ExtResource("6_i6g32")
-enemy_scenes = Array[PackedScene]([ExtResource("8_v158k"), ExtResource("9_ldgsr"), ExtResource("10_o5yvi")])
+enemy_scenes = Array[PackedScene]([ExtResource("8_v158k"), ExtResource("10_o5yvi"), ExtResource("9_ldgsr")])

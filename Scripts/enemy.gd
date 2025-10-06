@@ -68,6 +68,12 @@ func take_damage(amount: int) -> void:
 	if current_health <= 0:
 		die()
 
-func die() -> void:
-	print("[DEBUG] Enemy ", self.name, " died")
+func die():
 	queue_free()
+	drop_exp()
+
+func drop_exp():
+	var exp_scene = preload("res://Scenes/EXPorb.tscn")
+	var exp_instance = exp_scene.instantiate()
+	exp_instance.global_position = global_position
+	get_tree().current_scene.add_child(exp_instance)

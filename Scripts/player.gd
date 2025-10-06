@@ -10,6 +10,9 @@ extends CharacterBody2D
 @onready var bullet_scene: PackedScene = preload("res://Scenes/bullet.tscn")
 @onready var collision: CollisionShape2D = $CollisionShape2D
 
+@export var exp: int = 0
+@export var total_exp: int = 0  # used to scale difficulty
+
 var current_health: float
 var last_direction: Vector2 = Vector2.RIGHT
 var shoot_timer: float = 0.0

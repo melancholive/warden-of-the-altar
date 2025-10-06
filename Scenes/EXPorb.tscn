@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://b25q43fdxjqey"]
+
+[ext_resource type="Script" uid="uid://dfcgtktin3rnw" path="res://Scripts/EXPorb.gd" id="1_m5bbf"]
+[ext_resource type="Texture2D" uid="uid://bufsaujjxov16" path="res://Art Assets/EXPorb.png" id="2_jhbri"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ltfc6"]
+
+[node name="ExPorb" type="Area2D"]
+script = ExtResource("1_m5bbf")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.16171286, 0.16171286)
+texture = ExtResource("2_jhbri")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ltfc6")
