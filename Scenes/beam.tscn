@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtmw4elikgd7s"]
+
+[ext_resource type="Script" uid="uid://g7x5rq2832j8" path="res://Scripts/beam.gd" id="1_f22xp"]
+
+[node name="Beam" type="Node2D"]
+script = ExtResource("1_f22xp")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+
+[node name="BeamLine2D" type="Line2D" parent="."]
+default_color = Color(0.63549536, 0, 0.15888, 1)

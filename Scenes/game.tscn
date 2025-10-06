@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dtnp22u6gsje6"]
+[gd_scene load_steps=15 format=3 uid="uid://dtnp22u6gsje6"]
 
 [ext_resource type="Texture2D" uid="uid://dap3lpf3wwab1" path="res://Art Assets/grass.png" id="1_3dryh"]
 [ext_resource type="Script" uid="uid://d32cj85lt2hno" path="res://Scripts/game_controller.gd" id="1_i6g32"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://wa6bn87mjt7j" path="res://Scenes/single-shooter.tscn" id="8_v158k"]
 [ext_resource type="PackedScene" uid="uid://cfhr5ps0cjfp0" path="res://Scenes/spiral-shooter.tscn" id="9_ldgsr"]
 [ext_resource type="PackedScene" uid="uid://dguynv7eodip0" path="res://Scenes/fan-shooter.tscn" id="10_o5yvi"]
+[ext_resource type="PackedScene" uid="uid://bvd43gq2a1i3e" path="res://Scenes/single-beamer.tscn" id="10_rku1e"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wowpa"]
 texture = ExtResource("1_3dryh")
@@ -6303,7 +6304,7 @@ player = NodePath("../Player")
 
 [node name="Enemy Spawner" type="Node2D" parent="."]
 script = ExtResource("6_i6g32")
-enemy_scenes = Array[PackedScene]([ExtResource("8_v158k"), ExtResource("9_ldgsr"), ExtResource("10_o5yvi")])
+enemy_scenes = Array[PackedScene]([ExtResource("8_v158k"), ExtResource("9_ldgsr"), ExtResource("10_rku1e"), ExtResource("10_o5yvi")])
 
 [node name="Label" type="Label" parent="."]
 offset_left = -111.0
