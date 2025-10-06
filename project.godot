@@ -17,5 +17,4 @@ config/icon="res://icon.svg"
 
 [global_group]
 
-altar=""
-player=""
+game_controller=""

@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://don1ad0ul7uxj"]
+[gd_scene load_steps=5 format=3 uid="uid://don1ad0ul7uxj"]
 
 [ext_resource type="Texture2D" uid="uid://cuud57wgb8yj6" path="res://Art Assets/altar.png" id="1_qtrpd"]
 [ext_resource type="Script" uid="uid://bjtbo0mvgpsh4" path="res://Scripts/altar.gd" id="1_w0d7v"]
+[ext_resource type="Texture2D" uid="uid://b54cxmmcxarp6" path="res://Art Assets/altar-health.png" id="3_brtn5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w0d7v"]
 radius = 179.17868
@@ -18,13 +19,13 @@ shape = SubResource("CircleShape2D_w0d7v")
 [node name="PanelContainer" type="PanelContainer" parent="."]
 offset_left = -81.0
 offset_top = 75.0
-offset_right = 83.0
-offset_bottom = 89.0
+offset_right = 184.0
+offset_bottom = 122.0
+scale = Vector2(0.6159125, 0.34623405)
 
-[node name="ProgressBar" type="ProgressBar" parent="PanelContainer"]
+[node name="TextureProgressBar" type="TextureProgressBar" parent="PanelContainer"]
 layout_mode = 2
-fill_mode = 1
-show_percentage = false
+texture_progress = ExtResource("3_brtn5")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

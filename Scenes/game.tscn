@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://dtnp22u6gsje6"]
+[gd_scene load_steps=10 format=3 uid="uid://dtnp22u6gsje6"]
 
 [ext_resource type="Texture2D" uid="uid://dap3lpf3wwab1" path="res://Art Assets/grass.png" id="1_3dryh"]
+[ext_resource type="Script" uid="uid://d32cj85lt2hno" path="res://Scripts/game_controller.gd" id="1_i6g32"]
 [ext_resource type="PackedScene" uid="uid://don1ad0ul7uxj" path="res://Scenes/altar.tscn" id="1_qxrlw"]
 [ext_resource type="Texture2D" uid="uid://xt8kkvgxrjgy" path="res://Art Assets/dungeon-tileset.png" id="2_wowpa"]
 [ext_resource type="PackedScene" uid="uid://cf0h747ysg515" path="res://Scenes/player.tscn" id="2_wrm1d"]
@@ -6280,7 +6281,8 @@ texture = ExtResource("2_wowpa")
 sources/0 = SubResource("TileSetAtlasSource_wowpa")
 sources/1 = SubResource("TileSetAtlasSource_i6g32")
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node" groups=["game_controller"]]
+script = ExtResource("1_i6g32")
 
 [node name="Background Layer" type="TileMapLayer" parent="."]
 tile_set = SubResource("TileSet_wrm1d")
