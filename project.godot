@@ -14,3 +14,8 @@ config/name="warden-of-the-altar"
 run/main_scene="uid://dtnp22u6gsje6"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
+
+[global_group]
+
+altar=""
+player=""
