@@ -96,32 +96,41 @@ func choose_enemy() -> PackedScene:
 	if player:
 		submitted = player.submitted_exp
 
-	# Base ratios (start easier → balance out as difficulty rises)
+	# Base ratios for easier enemies first
 	# Order: Single, Spiral, Beamer, Fan
 	var base_ratios = [50.0, 35.0, 10.0, 5.0]
-	var max_ratio_shift = 40.0  # redistributed from Single to harder types
+	var max_ratio_shift = 40.0
 	var difficulty_factor = clamp(global_difficulty / 100.0, 0.0, 1.0)
 
-	# Gradual rebalance as difficulty increases
+	# Shift ratios gradually as difficulty increases
 	var single_ratio = base_ratios[0] - max_ratio_shift * difficulty_factor
 	var spiral_ratio = base_ratios[1] + (max_ratio_shift * 0.3) * difficulty_factor
 	var beamer_ratio = base_ratios[2] + (max_ratio_shift * 0.4) * difficulty_factor
 	var fan_ratio = base_ratios[3] + (max_ratio_shift * 0.3) * difficulty_factor
 
+	# Only allow beam/fan enemies after a difficulty threshold
+	var beam_threshold = 30.0  # adjust this value
+	var fan_threshold = 50.0   # adjust this value
+	if global_difficulty < beam_threshold:
+		beamer_ratio = 0
+	if global_difficulty < fan_threshold:
+		fan_ratio = 0
+
 	var weights = [single_ratio, spiral_ratio, beamer_ratio, fan_ratio]
 
 	var total = 0.0
 	for w in weights:
-		total += w
+		total += max(w, 0.0)  # avoid negative weights
 
 	var roll = randf() * total
 	var cumulative = 0.0
 	for i in range(weights.size()):
-		cumulative += weights[i]
+		cumulative += max(weights[i], 0.0)
 		if roll <= cumulative:
 			return enemy_scenes[i]
 
-	return enemy_scenes[0]
+	return enemy_scenes[0]  # fallback
+
 
 
 func _on_enemy_removed():

@@ -2,14 +2,14 @@
 extends "res://Scripts/enemy.gd"
 
 @export var bullets_per_shot: int = 4      # one bullet per cardinal direction
-@export var rotate_angle: float = 25.0     # degrees to rotate after each shot
-@export var shoot_interval: float = 1.0    # seconds between shots
+@export var rotate_angle: float = 5.0     # degrees to rotate after each shot
+@export var shoot_interval: float = 0.3    # seconds between shots
 
 var current_rotation: float = 0.0          # degrees
 
 func _ready() -> void:
 	max_health = 30  # 3 hits
-	speed = 120.0
+	speed = 50.0
 	super._ready()
 	
 func _physics_process(delta: float) -> void:

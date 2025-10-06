@@ -14,6 +14,11 @@ var state: String = "cooldown"  # "cooldown", "warning", "firing"
 var timer: float = 0.0
 var current_dir: Vector2 = Vector2.RIGHT
 
+func _ready() -> void:
+	max_health = 30  # 3 hits
+	speed = 75.0
+	super._ready()
+	
 func _process(delta):
 	if not player:
 		return

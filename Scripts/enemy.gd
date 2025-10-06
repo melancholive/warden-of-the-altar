@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 @export var max_health: int = 10
-@export var speed: float = 75.0
+@export var speed: float = 50.0
 @export var damage_on_contact: int = 1
 @export var shoot_bullet: bool = false
 @export var bullet_scene: PackedScene
