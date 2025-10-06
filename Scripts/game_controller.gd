@@ -3,8 +3,8 @@ extends Node
 @onready var altar = get_tree().get_first_node_in_group("altar")
 
 # Ground EXP spawner properties
-@export var random_exp_scene: PackedScene = preload("res://Scenes/ExpOrb.tscn")
-@export var spawn_interval: float = 5.0
+@export var random_exp_scene: PackedScene = preload("res://Scenes/EXPorb.tscn")
+@export var spawn_interval: float = 1.0
 @export var min_value: int = 5
 @export var max_value: int = 10
 
