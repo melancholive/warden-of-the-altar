@@ -1,60 +1,53 @@
-[gd_scene load_steps=13 format=3 uid="uid://dguynv7eodip0"]
+[gd_scene load_steps=12 format=3 uid="uid://dguynv7eodip0"]
 
 [ext_resource type="Script" uid="uid://dd65o4tfj138w" path="res://Scripts/fan-shooter.gd" id="1_7s5x3"]
-[ext_resource type="Texture2D" uid="uid://cqekiftxctr0a" path="res://Art Assets/single-shooter.png" id="2_h1wpp"]
+[ext_resource type="Texture2D" uid="uid://tigni1uhi7x1" path="res://Art Assets/fan-shooter.png" id="2_7s5x3"]
 [ext_resource type="Texture2D" uid="uid://dsdtjjnykl42h" path="res://Art Assets/enemy-health.png" id="3_ko3b6"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_xwbln"]
-atlas = ExtResource("2_h1wpp")
-region = Rect2(0, 0, 256, 255)
+[sub_resource type="AtlasTexture" id="AtlasTexture_h1wpp"]
+atlas = ExtResource("2_7s5x3")
+region = Rect2(0, 0, 128, 150)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_btbor"]
-atlas = ExtResource("2_h1wpp")
-region = Rect2(0, 255, 256, 255)
+[sub_resource type="AtlasTexture" id="AtlasTexture_ko3b6"]
+atlas = ExtResource("2_7s5x3")
+region = Rect2(128, 0, 128, 150)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_j5w6x"]
-atlas = ExtResource("2_h1wpp")
-region = Rect2(0, 510, 256, 255)
+[sub_resource type="AtlasTexture" id="AtlasTexture_48bme"]
+atlas = ExtResource("2_7s5x3")
+region = Rect2(256, 0, 128, 150)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_lscqy"]
-atlas = ExtResource("2_h1wpp")
-region = Rect2(0, 765, 256, 255)
+[sub_resource type="AtlasTexture" id="AtlasTexture_pbthh"]
+atlas = ExtResource("2_7s5x3")
+region = Rect2(384, 0, 128, 150)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_ch070"]
-atlas = ExtResource("2_h1wpp")
-region = Rect2(0, 1020, 256, 255)
+[sub_resource type="AtlasTexture" id="AtlasTexture_vsrut"]
+atlas = ExtResource("2_7s5x3")
+region = Rect2(512, 0, 128, 150)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_d2pmb"]
-atlas = ExtResource("2_h1wpp")
-region = Rect2(0, 1275, 256, 255)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_6pgu7"]
-atlas = ExtResource("2_h1wpp")
-region = Rect2(0, 1530, 256, 255)
+[sub_resource type="AtlasTexture" id="AtlasTexture_grobj"]
+atlas = ExtResource("2_7s5x3")
+region = Rect2(640, 0, 128, 150)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_qsp4v"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_xwbln")
+"texture": SubResource("AtlasTexture_h1wpp")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_btbor")
+"texture": SubResource("AtlasTexture_ko3b6")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_j5w6x")
+"texture": SubResource("AtlasTexture_48bme")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_lscqy")
+"texture": SubResource("AtlasTexture_pbthh")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_ch070")
+"texture": SubResource("AtlasTexture_vsrut")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_d2pmb")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_6pgu7")
+"texture": SubResource("AtlasTexture_grobj")
 }],
 "loop": true,
 "name": &"walking",
@@ -62,25 +55,27 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xwbln"]
-size = Vector2(67, 38)
+size = Vector2(56, 80)
 
 [node name="FanShooter" type="CharacterBody2D" groups=["enemy"]]
 script = ExtResource("1_7s5x3")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(12, -3)
+scale = Vector2(0.56240344, 0.56240344)
 sprite_frames = SubResource("SpriteFrames_qsp4v")
 animation = &"walking"
-frame_progress = 0.28737837
+frame_progress = 0.86038023
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-0.5, 1)
+position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_xwbln")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-offset_left = -36.0
-offset_top = 23.0
-offset_right = 229.0
-offset_bottom = 70.0
+offset_left = -35.0
+offset_top = 41.0
+offset_right = 230.0
+offset_bottom = 88.0
 scale = Vector2(0.26869237, 0.2642419)
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="PanelContainer"]

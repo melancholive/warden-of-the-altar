@@ -6304,3 +6304,13 @@ player = NodePath("../Player")
 [node name="Enemy Spawner" type="Node2D" parent="."]
 script = ExtResource("6_i6g32")
 enemy_scenes = Array[PackedScene]([ExtResource("8_v158k"), ExtResource("9_ldgsr"), ExtResource("10_o5yvi")])
+
+[node name="Label" type="Label" parent="."]
+offset_left = -111.0
+offset_top = 94.99998
+offset_right = 308.0
+offset_bottom = 143.99997
+scale = Vector2(0.5533923, 0.5533923)
+text = "stay within the altar's radius to heal
+submit your offerings to the altar or the game will end"
+horizontal_alignment = 1

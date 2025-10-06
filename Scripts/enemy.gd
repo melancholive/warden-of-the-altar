@@ -1,4 +1,5 @@
 extends CharacterBody2D
+class_name EnemyBase
 
 @export var max_health: int = 10
 @export var speed: float = 50.0
@@ -6,7 +7,7 @@ extends CharacterBody2D
 @export var shoot_bullet: bool = false
 @export var bullet_scene: PackedScene
 @export var shoot_cooldown: float = 2.0
-@export var exp_drop: int = 5
+@export var exp_drop: int = 10  # Enemy kills drop higher EXP
 
 var current_health: int
 var shoot_timer: float = 0.0
@@ -19,7 +20,7 @@ func _ready() -> void:
 	if health_bar:
 		health_bar.max_value = max_health
 		health_bar.value = current_health
-	#print("[DEBUG] Enemy ready: ", self.name, " shoot_bullet=", shoot_bullet)
+	set_physics_process(true)
 
 func _physics_process(delta: float) -> void:
 	move_behavior(delta)
@@ -51,7 +52,16 @@ func fire_bullet():
 	bullet.global_position = global_position
 	bullet.shooter = self
 	bullet.spawn_position = global_position
-	get_tree().current_scene.add_child(bullet)
+
+	# Make bullets red for enemies
+	if bullet.has_node("Sprite2D"):
+		bullet.get_node("Sprite2D").modulate = Color(1,0,0)
+
+	# Web-safe add
+	if get_parent():
+		get_parent().add_child(bullet)
+	else:
+		get_tree().current_scene.add_child(bullet)
 
 func take_damage(amount: int) -> void:
 	current_health -= amount
@@ -62,11 +72,12 @@ func take_damage(amount: int) -> void:
 
 func die() -> void:
 	print("[DEBUG] Enemy ", name, " died")
-	
-	# Drop main EXP orb
-	var exp_orb = preload("res://Scenes/ExpOrb.tscn").instantiate()
+
+	# Drop main EXP or
+	var exp_orb_scene = preload("res://Scenes/EXPorb.tscn")
+	var exp_orb = exp_orb_scene.instantiate()
 	exp_orb.global_position = global_position
-	exp_orb.value = randi_range(10, 20)  # Higher value for killing enemy
+	exp_orb.value = randi_range(10, 20)  # Enemy kill gives higher EXP
 	get_tree().current_scene.add_child(exp_orb)
-	
+
 	queue_free()
