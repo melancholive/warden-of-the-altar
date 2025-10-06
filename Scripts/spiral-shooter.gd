@@ -7,6 +7,11 @@ extends "res://Scripts/enemy.gd"
 
 var current_rotation: float = 0.0          # degrees
 
+func _ready() -> void:
+	max_health = 30  # 3 hits
+	speed = 120.0
+	super._ready()
+	
 func _physics_process(delta: float) -> void:
 	move_behavior(delta)
 	handle_shooting(delta)

@@ -1,9 +1,9 @@
 extends CharacterBody2D
 
-@export var speed: float = 200.0
+@export var speed: float = 250.0
 @export var max_health: int = 100
-@export var heal_rate: float = 15.0
-@export var shoot_cooldown: float = 0.25
+@export var heal_rate: float = 1.0
+@export var shoot_cooldown: float = 0.15
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var health_bar: TextureProgressBar = $PanelContainer/TextureProgressBar

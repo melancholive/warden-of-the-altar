@@ -4,7 +4,7 @@ extends Node
 
 # Ground EXP spawner properties
 @export var random_exp_scene: PackedScene = preload("res://Scenes/EXPorb.tscn")
-@export var spawn_interval: float = 1.0
+@export var spawn_interval: float = 0.5
 @export var min_value: int = 5
 @export var max_value: int = 10
 

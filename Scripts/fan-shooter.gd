@@ -9,6 +9,11 @@ var burst_timer: float = 0.0
 var bullets_fired_in_burst: int = 0
 var firing_burst: bool = false
 
+func _ready() -> void:
+	max_health = 40  # 4 hits
+	speed = 140.0
+	super._ready()
+	
 func _physics_process(delta: float) -> void:
 	move_behavior(delta)
 	handle_burst(delta)
