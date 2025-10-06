@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 @export var max_health: int = 10
-@export var speed: float = 100.0
+@export var speed: float = 50.0
 @export var damage_on_contact: int = 1
 @export var shoot_bullet: bool = false
 @export var bullet_scene: PackedScene
@@ -19,7 +19,7 @@ func _ready() -> void:
 	if health_bar:
 		health_bar.max_value = max_health
 		health_bar.value = current_health
-	print("[DEBUG] Enemy ready: ", self.name, " shoot_bullet=", shoot_bullet)
+	#print("[DEBUG] Enemy ready: ", self.name, " shoot_bullet=", shoot_bullet)
 
 func _physics_process(delta: float) -> void:
 	move_behavior(delta)
@@ -61,16 +61,12 @@ func take_damage(amount: int) -> void:
 		die()
 
 func die() -> void:
-	print("[DEBUG] Enemy ", self.name, " died")
-	drop_exp()
+	print("[DEBUG] Enemy ", name, " died")
+	
+	# Drop main EXP orb
+	var exp_orb = preload("res://Scenes/ExpOrb.tscn").instantiate()
+	exp_orb.global_position = global_position
+	exp_orb.value = randi_range(10, 20)  # Higher value for killing enemy
+	get_tree().current_scene.add_child(exp_orb)
+	
 	queue_free()
-
-func drop_exp():
-	var orb_scene = preload("res://Scenes/EXPorb.tscn")
-	var orb = orb_scene.instantiate()
-	orb.global_position = global_position
-	orb.exp_amount = exp_drop
-	var player = get_tree().get_first_node_in_group("player")
-	if player:
-		orb.connect("collected", Callable(player, "_on_exp_collected"))
-	get_tree().current_scene.add_child(orb)

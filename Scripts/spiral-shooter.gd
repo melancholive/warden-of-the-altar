@@ -32,4 +32,4 @@ func fire_spiral() -> void:
 		bullet.spawn_position = global_position
 		get_tree().current_scene.add_child(bullet)
 
-	print("[DEBUG] Enemy fired spiral bullets at rotation ", current_rotation)
+	#print("[DEBUG] Enemy fired spiral bullets at rotation ", current_rotation)

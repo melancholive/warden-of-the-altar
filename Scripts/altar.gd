@@ -7,8 +7,8 @@ signal altar_depleted
 
 @export var max_progress: float = 100.0
 @export var current_progress: float = max_progress
-@export var decay_rate: float = 2.0  # amount lost per second
-@export var healing_rate: float = 15.0  # how much the altar heals the player per second
+@export var decay_rate: float = 2.0         # Base decay rate per second
+@export var healing_rate: float = 15.0      # How much the altar heals the player per second
 
 # Track players in altar zone
 var players_in_zone: Array = []
@@ -26,8 +26,15 @@ func _physics_process(delta: float) -> void:
 	heal_players(delta)
 
 func update_progress(delta: float) -> void:
-	# Altar naturally decays
-	current_progress = max(current_progress - decay_rate * delta, 0)
+	# Calculate difficulty scaling based on submitted EXP
+	var player = get_tree().get_first_node_in_group("player")
+	var difficulty_scale = 1.0
+	if player:
+		# Logarithmic scaling: starts subtle, more obvious at high EXP
+		difficulty_scale += log(1 + player.submitted_exp / 20.0)
+
+	# Reduce altar progress with scaled decay
+	current_progress = max(current_progress - decay_rate * difficulty_scale * delta, 0)
 	progress_bar.value = current_progress
 
 	if current_progress <= 0:
@@ -40,7 +47,6 @@ func heal_players(delta: float) -> void:
 				player.current_health = min(player.current_health + healing_rate * delta, player.max_health)
 				if player.health_bar:
 					player.health_bar.value = player.current_health
-				#print("[DEBUG] Healing player ", player.name, " to ", player.current_health)
 
 func _draw() -> void:
 	if collision.shape:

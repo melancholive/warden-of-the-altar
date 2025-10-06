@@ -52,4 +52,4 @@ func fire_fan_bullets():
 		bullet.spawn_position = global_position
 		get_tree().current_scene.add_child(bullet)
 
-	print("[DEBUG] Enemy fired fan bullets toward player")
+	#print("[DEBUG] Enemy fired fan bullets toward player")

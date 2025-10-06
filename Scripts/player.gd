@@ -17,6 +17,7 @@ var in_altar_zone: bool = false
 var collected_exp: int = 0
 var submitted_exp: int = 0
 
+	
 func _ready() -> void:
 	current_health = max_health
 	health_bar.max_value = max_health
@@ -39,7 +40,7 @@ func _physics_process(delta: float) -> void:
 
 	update_health(delta)
 	handle_shooting(delta)
-	handle_altar_submission()
+	handle_altar_submission(delta)
 
 	# Animations
 	if direction != Vector2.ZERO:
@@ -68,11 +69,23 @@ func update_health(delta: float) -> void:
 		current_health = min(current_health + delta * heal_rate, max_health)
 	health_bar.value = current_health
 
-func handle_altar_submission() -> void:
-	if in_altar_zone and collected_exp > 0 and Input.is_action_pressed("submit_exp"):
-		submitted_exp += collected_exp
-		print("[DEBUG] Submitted EXP: ", collected_exp, ", Total Submitted: ", submitted_exp)
-		collected_exp = 0
+func handle_altar_submission(delta: float) -> void:
+	if in_altar_zone and collected_exp > 0:
+		# How much EXP is submitted per second
+		var submit_rate: float = 10.0  # adjust as desired
+		var exp_to_submit = min(submit_rate * delta, collected_exp)
+
+		collected_exp -= exp_to_submit
+		submitted_exp += exp_to_submit
+
+		# Update the altar progress if needed
+		var altar = get_tree().get_first_node_in_group("altar")
+		if altar:
+			altar.current_progress = min(altar.current_progress + exp_to_submit, altar.max_progress)
+			if altar.progress_bar:
+				altar.progress_bar.value = altar.current_progress
+
+		print("[DEBUG] Submitting EXP: ", exp_to_submit, ", Remaining Collected: ", collected_exp)
 
 func _on_exp_collected(exp: int) -> void:
 	collected_exp += exp

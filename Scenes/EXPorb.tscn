@@ -6,11 +6,12 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_ltfc6"]
 
 [node name="ExPorb" type="Area2D"]
+scale = Vector2(0.20000108, 0.20000108)
 script = ExtResource("1_m5bbf")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.16171286, 0.16171286)
 texture = ExtResource("2_jhbri")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(6.64, 6.64)
 shape = SubResource("CircleShape2D_ltfc6")
