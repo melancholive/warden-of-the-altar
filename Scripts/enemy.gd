@@ -13,6 +13,7 @@ var current_health: int
 var shoot_timer: float = 0.0
 
 @onready var health_bar: TextureProgressBar = $PanelContainer/TextureProgressBar
+@onready var anim_sprite: AnimatedSprite2D = $AnimatedSprite2D  # Add this line
 
 func _ready() -> void:
 	current_health = max_health
@@ -21,6 +22,9 @@ func _ready() -> void:
 	if health_bar:
 		health_bar.max_value = max_health
 		health_bar.value = current_health
+
+	if anim_sprite:
+		anim_sprite.play("idle")  # Start idle by default
 
 	# Scale stats based on player's submitted EXP
 	scale_stats()
@@ -37,11 +41,6 @@ func scale_stats() -> void:
 		health_bar.max_value = current_health
 		health_bar.value = current_health
 
-	# Scale bullet counts if shooting
-	if shoot_bullet and bullet_scene:
-		# Fan or Spiral bullets are handled in fire_bullet logic
-		pass
-
 func _physics_process(delta: float) -> void:
 	move_behavior(delta)
 	handle_shooting(delta)
@@ -52,6 +51,16 @@ func move_behavior(_delta: float) -> void:
 		var dir = (player.global_position - global_position).normalized()
 		velocity = dir * speed
 		move_and_slide()
+
+		# Play movement animation if available
+		if anim_sprite:
+			if velocity.length() > 0.1:
+				if not anim_sprite.is_playing() or anim_sprite.animation != "walking":
+					anim_sprite.play("walking")
+				anim_sprite.flip_h = velocity.x > 0  # flip sprite left/right
+			else:
+				if anim_sprite.animation != "idle":
+					anim_sprite.play("idle")
 
 func handle_shooting(delta: float) -> void:
 	if not shoot_bullet or not bullet_scene:
@@ -85,10 +94,10 @@ func take_damage(amount: int) -> void:
 func die() -> void:
 	print("[DEBUG] Enemy ", name, " died")
 	
-	# Drop main EXP orb
+	# Drop EXP
 	var exp_orb = preload("res://Scenes/EXPorb.tscn").instantiate()
 	exp_orb.global_position = global_position
-	exp_orb.value = randi_range(10, 20)  # Stronger EXP for killing enemy
+	exp_orb.value = randi_range(10, 20)
 	get_tree().current_scene.add_child(exp_orb)
-	
+
 	queue_free()
