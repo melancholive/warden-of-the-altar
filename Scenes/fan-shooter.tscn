@@ -1,0 +1,88 @@
+[gd_scene load_steps=13 format=3 uid="uid://dguynv7eodip0"]
+
+[ext_resource type="Script" uid="uid://dd65o4tfj138w" path="res://Scripts/fan-shooter.gd" id="1_7s5x3"]
+[ext_resource type="Texture2D" uid="uid://cqekiftxctr0a" path="res://Art Assets/single-shooter.png" id="2_h1wpp"]
+[ext_resource type="Texture2D" uid="uid://dsdtjjnykl42h" path="res://Art Assets/enemy-health.png" id="3_ko3b6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xwbln"]
+atlas = ExtResource("2_h1wpp")
+region = Rect2(0, 0, 256, 255)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_btbor"]
+atlas = ExtResource("2_h1wpp")
+region = Rect2(0, 255, 256, 255)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j5w6x"]
+atlas = ExtResource("2_h1wpp")
+region = Rect2(0, 510, 256, 255)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lscqy"]
+atlas = ExtResource("2_h1wpp")
+region = Rect2(0, 765, 256, 255)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ch070"]
+atlas = ExtResource("2_h1wpp")
+region = Rect2(0, 1020, 256, 255)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d2pmb"]
+atlas = ExtResource("2_h1wpp")
+region = Rect2(0, 1275, 256, 255)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6pgu7"]
+atlas = ExtResource("2_h1wpp")
+region = Rect2(0, 1530, 256, 255)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qsp4v"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xwbln")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_btbor")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j5w6x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lscqy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ch070")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d2pmb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6pgu7")
+}],
+"loop": true,
+"name": &"walking",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xwbln"]
+size = Vector2(67, 38)
+
+[node name="FanShooter" type="CharacterBody2D" groups=["enemy"]]
+script = ExtResource("1_7s5x3")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_qsp4v")
+animation = &"walking"
+frame_progress = 0.28737837
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 1)
+shape = SubResource("RectangleShape2D_xwbln")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+offset_left = -36.0
+offset_top = 23.0
+offset_right = 229.0
+offset_bottom = 70.0
+scale = Vector2(0.26869237, 0.2642419)
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="PanelContainer"]
+layout_mode = 2
+texture_progress = ExtResource("3_ko3b6")
