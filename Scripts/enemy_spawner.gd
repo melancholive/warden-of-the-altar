@@ -28,19 +28,15 @@ func spawn_enemy():
 	if enemy_scene == null:
 		return
 
-	var camera = get_viewport().get_camera_2d()
-	if not camera:
+	var player = get_tree().get_first_node_in_group("player")
+	if not player:
 		return
 
-	var cam_rect = Rect2(
-		camera.global_position - camera.zoom * camera.get_viewport_rect().size / 2,
-		camera.get_viewport_rect().size
-	)
-
-	var spawn_width = cam_rect.size.x * 3.0
-	var spawn_height = cam_rect.size.y * 3.0
-	var spawn_origin = cam_rect.position - Vector2(spawn_width / 2, spawn_height / 2)
-	var spawn_pos = spawn_origin + Vector2(randf() * spawn_width, randf() * spawn_height)
+	# Spawn within a radius around the player
+	var spawn_radius = 1000.0 + global_difficulty * 2  # enemies get slightly closer/further as difficulty increases
+	var angle = randf() * TAU
+	var offset = Vector2(cos(angle), sin(angle)) * spawn_radius
+	var spawn_pos = player.global_position + offset
 
 	var enemy_instance = enemy_scene.instantiate()
 	enemy_instance.global_position = spawn_pos
@@ -48,7 +44,6 @@ func spawn_enemy():
 
 	# Assign bullet scene if applicable
 	if "shoot_bullet" in enemy_instance and "bullet_scene" in enemy_instance:
-		var player = get_tree().get_first_node_in_group("player")
 		var submitted_exp = 0
 		if player:
 			submitted_exp = player.submitted_exp
@@ -86,7 +81,7 @@ func spawn_enemy():
 		get_tree().current_scene.add_child(enemy_instance)
 
 	enemies_alive += 1
-	print("[DEBUG] Spawned enemy: ", enemy_scene.resource_path, " at ", spawn_pos)
+	#print("[DEBUG] Spawned enemy: ", enemy_scene.resource_path, " at ", spawn_pos)
 	enemy_instance.connect("tree_exited", Callable(self, "_on_enemy_removed"))
 
 
@@ -98,9 +93,10 @@ func choose_enemy() -> PackedScene:
 
 	# Base ratios for easier enemies first
 	# Order: Single, Spiral, Beamer, Fan
-	var base_ratios = [50.0, 35.0, 10.0, 5.0]
+	var base_ratios = [70.0, 15.0, 10.0, 5.0]
 	var max_ratio_shift = 40.0
 	var difficulty_factor = clamp(global_difficulty / 100.0, 0.0, 1.0)
+	print(global_difficulty)
 
 	# Shift ratios gradually as difficulty increases
 	var single_ratio = base_ratios[0] - max_ratio_shift * difficulty_factor
@@ -109,8 +105,8 @@ func choose_enemy() -> PackedScene:
 	var fan_ratio = base_ratios[3] + (max_ratio_shift * 0.3) * difficulty_factor
 
 	# Only allow beam/fan enemies after a difficulty threshold
-	var beam_threshold = 30.0  # adjust this value
-	var fan_threshold = 50.0   # adjust this value
+	var beam_threshold = 0.3  # adjust this value
+	var fan_threshold = 0.5   # adjust this value
 	if global_difficulty < beam_threshold:
 		beamer_ratio = 0
 	if global_difficulty < fan_threshold:

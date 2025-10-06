@@ -4,7 +4,7 @@ extends Node
 
 # Ground EXP spawner properties
 @export var random_exp_scene: PackedScene = preload("res://Scenes/EXPorb.tscn")
-@export var spawn_interval: float = 0.5
+@export var spawn_interval: float = 0.2
 @export var min_value: int = 5
 @export var max_value: int = 10
 
@@ -45,7 +45,7 @@ func spawn_random_exp() -> void:
 	orb.value = rng.randi_range(min_value, max_value)
 
 	get_tree().current_scene.add_child(orb)
-	print("[DEBUG] Spawned ground EXP at ", pos, " value: ", orb.value)
+	#print("[DEBUG] Spawned ground EXP at ", pos, " value: ", orb.value)
 
 func _on_altar_depleted():
 	print("The altar's energy has been depleted. Game Over!")

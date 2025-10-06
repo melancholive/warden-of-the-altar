@@ -8,7 +8,7 @@ signal altar_depleted
 @export var max_progress: float = 100.0
 @export var current_progress: float = max_progress
 @export var decay_rate: float = 2.0         # Base decay rate per second
-@export var healing_rate: float = 15.0      # How much the altar heals the player per second
+@export var healing_rate: float = 150.0      # How much the altar heals the player per second
 
 # Track players in altar zone
 var players_in_zone: Array = []

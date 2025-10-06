@@ -21,4 +21,4 @@ func _on_body_entered(body: Node) -> void:
 	if body.is_in_group("player") and body.has_method("_on_exp_collected"):
 		body._on_exp_collected(value)
 		queue_free()
-		print("[DEBUG] Player picked up EXP: ", value)
+		#print("[DEBUG] Player picked up EXP: ", value)

@@ -5,12 +5,13 @@
 [ext_resource type="Texture2D" uid="uid://b54cxmmcxarp6" path="res://Art Assets/altar-health.png" id="3_brtn5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w0d7v"]
-radius = 179.17868
+radius = 233.05363
 
 [node name="Altar" type="Area2D" groups=["altar"]]
 script = ExtResource("1_w0d7v")
 
 [node name="AnimatedSprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.4633787, 1.4633787)
 texture = ExtResource("1_qtrpd")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -18,9 +19,9 @@ shape = SubResource("CircleShape2D_w0d7v")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 offset_left = -81.0
-offset_top = 75.0
+offset_top = 112.0
 offset_right = 184.0
-offset_bottom = 122.0
+offset_bottom = 159.0
 scale = Vector2(0.6159125, 0.34623405)
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="PanelContainer"]

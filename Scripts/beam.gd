@@ -3,8 +3,8 @@ extends Node2D
 class_name BeamRay
 
 @export var length: float = 800.0
-@export var thickness: float = 6.0
-@export var damage_per_second: float = 6.0
+@export var thickness: float = 8.0
+@export var damage_per_second: float = 0.1
 @export var track_target: bool = true
 
 var shooter: Node = null
