@@ -5,7 +5,7 @@ extends CharacterBody2D
 @export var damage_on_contact: int = 1
 @export var shoot_bullet: bool = false
 @export var bullet_scene: PackedScene
-@export var shoot_cooldown: float = 5.0
+@export var shoot_cooldown: float = 2.0
 @export var exp_drop: int = 10  # Base EXP dropped
 
 # Current stats

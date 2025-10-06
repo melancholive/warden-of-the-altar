@@ -2,14 +2,18 @@
 extends "res://Scripts/enemy.gd"
 
 @export var bullets_per_shot: int = 4      # one bullet per cardinal direction
-@export var rotate_angle: float = 5.0     # degrees to rotate after each shot
+@export var rotate_angle_min: float = 3.0  # min degrees to rotate per shot
+@export var rotate_angle_max: float = 10.0 # max degrees to rotate per shot
 @export var shoot_interval: float = 0.3    # seconds between shots
 
 var current_rotation: float = 0.0          # degrees
+var rotate_angle: float = 5.0              # will be randomized per enemy
 
 func _ready() -> void:
 	max_health = 30  # 3 hits
 	speed = 50.0
+	# randomize the rotation increment for this enemy
+	rotate_angle = randf_range(rotate_angle_min, rotate_angle_max)
 	super._ready()
 	
 func _physics_process(delta: float) -> void:
