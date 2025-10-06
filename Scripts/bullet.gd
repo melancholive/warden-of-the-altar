@@ -7,8 +7,21 @@ var direction: Vector2 = Vector2.RIGHT
 var shooter: Node = null
 var spawn_position: Vector2
 
+@onready var sprite: Sprite2D = $Sprite2D  # change if using AnimatedSprite2D or another node
+
 func _ready() -> void:
 	spawn_position = global_position
+	update_color()
+
+func update_color() -> void:
+	if shooter == null:
+		sprite.modulate = Color.WHITE
+	elif shooter.is_in_group("enemy"):
+		sprite.modulate = Color.RED
+	elif shooter.is_in_group("player"):
+		sprite.modulate = Color.WHITE
+	else:
+		sprite.modulate = Color.WHITE  # fallback
 
 func _physics_process(delta: float) -> void:
 	# Move bullet
@@ -27,19 +40,15 @@ func _on_body_entered(body: Node) -> void:
 		return  # Ignore the shooter itself
 
 	# Damage player if shot by enemy
-	if shooter.is_in_group("enemy") and body.is_in_group("player"):
+	if shooter != null and shooter.is_in_group("enemy") and body.is_in_group("player"):
 		if body.has_method("take_damage"):
 			body.take_damage(damage)
 		queue_free()
 		return
 
 	# Damage enemy if shot by player
-	if shooter.is_in_group("player") and body.is_in_group("enemy"):
+	if shooter != null and shooter.is_in_group("player") and body.is_in_group("enemy"):
 		if body.has_method("take_damage"):
 			body.take_damage(damage)
 		queue_free()
 		return
-
-	# Optional: destroy on hitting walls
-	if body.is_in_group("wall"):
-		queue_free()

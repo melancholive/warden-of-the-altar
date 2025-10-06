@@ -37,15 +37,12 @@ func spawn_enemy():
 	var enemy_scene = enemy_scenes[randi() % enemy_scenes.size()]
 	var enemy_instance = enemy_scene.instantiate()
 	enemy_instance.global_position = spawn_pos
-
-	# Automatically add to "enemy" group
 	enemy_instance.add_to_group("enemy")
 
-	# Assign bullet scene if the enemy has the properties
+	# Assign bullet scene
 	if "shoot_bullet" in enemy_instance and "bullet_scene" in enemy_instance:
 		enemy_instance.shoot_bullet = true
 		enemy_instance.bullet_scene = preload("res://Scenes/bullet.tscn")
-		print("[DEBUG] Assigned bullet scene to ", enemy_instance.name)
 
 	# Add to scene
 	var enemies_node = get_tree().current_scene.get_node_or_null("Enemies")
@@ -56,10 +53,7 @@ func spawn_enemy():
 
 	enemies_alive += 1
 	print("[DEBUG] Spawned enemy: ", enemy_scene.resource_path, " at ", spawn_pos)
-
-	# Track removal
 	enemy_instance.connect("tree_exited", Callable(self, "_on_enemy_removed"))
 
 func _on_enemy_removed():
 	enemies_alive = max(enemies_alive - 1, 0)
-	print("[DEBUG] Enemy removed, enemies_alive = ", enemies_alive)

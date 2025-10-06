@@ -1,12 +1,12 @@
-# enemy_base.gd
 extends CharacterBody2D
 
 @export var max_health: int = 10
-@export var speed: float = 10.0
+@export var speed: float = 100.0
 @export var damage_on_contact: int = 1
 @export var shoot_bullet: bool = false
 @export var bullet_scene: PackedScene
 @export var shoot_cooldown: float = 2.0
+@export var exp_drop: int = 5
 
 var current_health: int
 var shoot_timer: float = 0.0
@@ -19,47 +19,39 @@ func _ready() -> void:
 	if health_bar:
 		health_bar.max_value = max_health
 		health_bar.value = current_health
-	print("[DEBUG] Enemy ready: ", self.name, " shoot_bullet=", shoot_bullet, " bullet_scene=", bullet_scene)
+	print("[DEBUG] Enemy ready: ", self.name, " shoot_bullet=", shoot_bullet)
 
 func _physics_process(delta: float) -> void:
 	move_behavior(delta)
 	handle_shooting(delta)
 
 func move_behavior(_delta: float) -> void:
-	# Move toward player if exists
 	var player = get_tree().get_first_node_in_group("player")
-	if not player:
-		velocity = Vector2.ZERO
-	elif player:
+	if player:
 		var dir = (player.global_position - global_position).normalized()
 		velocity = dir * speed
 		move_and_slide()
 
 func handle_shooting(delta: float) -> void:
-	if not shoot_bullet or bullet_scene == null:
+	if not shoot_bullet or not bullet_scene:
 		return
 
 	shoot_timer -= delta
 	if shoot_timer <= 0:
-		fire_bullet()  # Default single shot toward player
+		fire_bullet()
 		shoot_timer = shoot_cooldown
 
 func fire_bullet():
 	if bullet_scene == null:
-		print("[DEBUG] Cannot fire: bullet_scene is null")
 		return
-
 	var bullet = bullet_scene.instantiate()
+	var player = get_tree().get_first_node_in_group("player")
+	if player:
+		bullet.direction = (player.global_position - global_position).normalized()
 	bullet.global_position = global_position
-	bullet.direction = (get_tree().get_first_node_in_group("player").global_position - global_position).normalized()
-
-	# assign shooter **before adding to the scene**
 	bullet.shooter = self
 	bullet.spawn_position = global_position
-
 	get_tree().current_scene.add_child(bullet)
-	print("[DEBUG] Bullet spawned at ", bullet.global_position, " by ", self.name)
-
 
 func take_damage(amount: int) -> void:
 	current_health -= amount
@@ -68,12 +60,17 @@ func take_damage(amount: int) -> void:
 	if current_health <= 0:
 		die()
 
-func die():
-	queue_free()
+func die() -> void:
+	print("[DEBUG] Enemy ", self.name, " died")
 	drop_exp()
+	queue_free()
 
 func drop_exp():
-	var exp_scene = preload("res://Scenes/EXPorb.tscn")
-	var exp_instance = exp_scene.instantiate()
-	exp_instance.global_position = global_position
-	get_tree().current_scene.add_child(exp_instance)
+	var orb_scene = preload("res://Scenes/EXPorb.tscn")
+	var orb = orb_scene.instantiate()
+	orb.global_position = global_position
+	orb.exp_amount = exp_drop
+	var player = get_tree().get_first_node_in_group("player")
+	if player:
+		orb.connect("collected", Callable(player, "_on_exp_collected"))
+	get_tree().current_scene.add_child(orb)
